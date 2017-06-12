@@ -1,0 +1,14 @@
+package com.alexsukharev.hackernewsreader.database;
+
+import android.arch.persistence.room.Database;
+import android.arch.persistence.room.RoomDatabase;
+
+import com.alexsukharev.hackernewsreader.database.dao.ItemDao;
+import com.alexsukharev.hackernewsreader.model.Item;
+
+@Database(entities = {Item.class}, version = 1, exportSchema = false)
+public abstract class AppDatabase extends RoomDatabase {
+
+    public abstract ItemDao itemDao();
+
+}
