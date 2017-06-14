@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import com.alexsukharev.hackernewsreader.di.components.ApplicationComponent;
 import com.alexsukharev.hackernewsreader.di.components.DaggerApplicationComponent;
 import com.alexsukharev.hackernewsreader.di.components.DaggerDatabaseComponent;
+import com.alexsukharev.hackernewsreader.di.components.DaggerRepositoryComponent;
 import com.alexsukharev.hackernewsreader.di.components.DatabaseComponent;
+import com.alexsukharev.hackernewsreader.di.components.RepositoryComponent;
 import com.alexsukharev.hackernewsreader.di.modules.ApplicationModule;
 
 public class Components {
@@ -16,6 +18,8 @@ public class Components {
     private static ApplicationComponent mApplicationComponent;
 
     private static DatabaseComponent mDatabaseComponent;
+
+    private static RepositoryComponent mRepositoryComponent;
 
     public static void init(@NonNull final Application application) {
         sApplication = application;
@@ -37,6 +41,15 @@ public class Components {
                     .build();
         }
         return mDatabaseComponent;
+    }
+
+    public static RepositoryComponent getRepositoryComponent() {
+        if (mRepositoryComponent == null) {
+            mRepositoryComponent = DaggerRepositoryComponent.builder()
+                    .applicationComponent(getApplicationComponent())
+                    .build();
+        }
+        return mRepositoryComponent;
     }
 
 }

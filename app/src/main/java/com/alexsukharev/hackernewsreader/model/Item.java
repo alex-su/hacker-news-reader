@@ -3,6 +3,8 @@ package com.alexsukharev.hackernewsreader.model;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.util.List;
+
 @Entity
 public class Item {
 
@@ -13,11 +15,21 @@ public class Item {
 
     private String type;
 
+    private String text;
+
     private String by;
 
     private String url;
 
     private int score;
+
+    private long parent;
+
+    private List<Long> children;
+
+    public Item(final long id) {
+        this.id = id;
+    }
 
     public long getId() {
         return id;
@@ -43,6 +55,14 @@ public class Item {
         this.type = type;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(final String text) {
+        this.text = text;
+    }
+
     public String getBy() {
         return by;
     }
@@ -65,5 +85,21 @@ public class Item {
 
     public void setScore(final int score) {
         this.score = score;
+    }
+
+    public long getParent() {
+        return parent;
+    }
+
+    public void setParent(final long parent) {
+        this.parent = parent;
+    }
+
+    public List<Long> getChildren() {
+        return children;
+    }
+
+    public void setChildren(final List<Long> children) {
+        this.children = children;
     }
 }

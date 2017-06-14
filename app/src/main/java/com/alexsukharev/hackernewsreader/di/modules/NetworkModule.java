@@ -2,6 +2,8 @@ package com.alexsukharev.hackernewsreader.di.modules;
 
 import com.alexsukharev.hackernewsreader.di.scopes.AppScope;
 import com.alexsukharev.hackernewsreader.network.HackerNewsApi;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import dagger.Module;
 import dagger.Provides;
@@ -22,12 +24,18 @@ public class NetworkModule {
 
     @Provides
     @AppScope
-    Retrofit getRetrofit() {
+    Retrofit getRetrofit(final Gson gson) {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
+    }
+
+    @Provides
+    @AppScope
+    Gson getGson() {
+        return new GsonBuilder().create();
     }
 
 }

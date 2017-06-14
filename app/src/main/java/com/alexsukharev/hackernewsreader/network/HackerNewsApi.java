@@ -4,16 +4,16 @@ import com.alexsukharev.hackernewsreader.model.Item;
 
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface HackerNewsApi {
 
     @GET("topstories.json")
-    Observable<List<Item>> getTopStories();
+    Flowable<List<Long>> getTopStories();
 
     @GET("item/{id}.json")
-    Observable<Item> getItem(@Path("id") final long id);
+    Flowable<Item> getItem(@Path("id") final long id);
 
 }
