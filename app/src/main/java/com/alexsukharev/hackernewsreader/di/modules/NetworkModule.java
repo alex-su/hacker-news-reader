@@ -1,12 +1,17 @@
 package com.alexsukharev.hackernewsreader.di.modules;
 
+import com.alexsukharev.hackernewsreader.BuildConfig;
 import com.alexsukharev.hackernewsreader.di.scopes.AppScope;
+import com.alexsukharev.hackernewsreader.model.Item;
 import com.alexsukharev.hackernewsreader.network.HackerNewsApi;
+import com.alexsukharev.hackernewsreader.util.ItemDeserializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -24,9 +29,10 @@ public class NetworkModule {
 
     @Provides
     @AppScope
-    Retrofit getRetrofit(final Gson gson) {
+    Retrofit getRetrofit(final Gson gson, final OkHttpClient client) {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
+                .client(client)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
@@ -34,8 +40,16 @@ public class NetworkModule {
 
     @Provides
     @AppScope
+    OkHttpClient getClient() {
+        final HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
+        return new OkHttpClient.Builder().addInterceptor(loggingInterceptor).build();
+    }
+
+    @Provides
+    @AppScope
     Gson getGson() {
-        return new GsonBuilder().create();
+        return new GsonBuilder().registerTypeAdapter(Item.class, new ItemDeserializer()).create();
     }
 
 }

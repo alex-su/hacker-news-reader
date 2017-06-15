@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_main">16dp</dimen>
+    <dimen name="padding_half">8dp</dimen>
+    <dimen name="fab_elevation">6dp</dimen>
+    <dimen name="card_corner_radius">4dp</dimen>
+
+    <dimen name="text_size_normal">18sp</dimen>
+</resources>

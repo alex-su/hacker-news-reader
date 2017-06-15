@@ -1,12 +1,18 @@
 package com.alexsukharev.hackernewsreader.model;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import java.util.List;
 
 @Entity
 public class Item {
+
+    public static final String TYPE_STORY = "story";
+    public static final String TYPE_COMMENT = "comment";
 
     @PrimaryKey
     private long id;
@@ -27,8 +33,18 @@ public class Item {
 
     private List<Long> children;
 
+    @ColumnInfo(name = "sort_order")
+    private int sortOrder;
+
     public Item(final long id) {
         this.id = id;
+    }
+
+    @Ignore
+    public Item(final long id, @NonNull final String type, final int sortOrder) {
+        this.id = id;
+        this.type = type;
+        this.sortOrder = sortOrder;
     }
 
     public long getId() {
@@ -101,5 +117,13 @@ public class Item {
 
     public void setChildren(final List<Long> children) {
         this.children = children;
+    }
+
+    public int getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(final int sortOrder) {
+        this.sortOrder = sortOrder;
     }
 }

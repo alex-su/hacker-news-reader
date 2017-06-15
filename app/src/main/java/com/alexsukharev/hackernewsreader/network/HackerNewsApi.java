@@ -5,6 +5,7 @@ import com.alexsukharev.hackernewsreader.model.Item;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
@@ -14,6 +15,9 @@ public interface HackerNewsApi {
     Flowable<List<Long>> getTopStories();
 
     @GET("item/{id}.json")
-    Flowable<Item> getItem(@Path("id") final long id);
+    Observable<Item> getItemObservable(@Path("id") final long id);
+
+    @GET("item/{id}.json")
+    Flowable<Item> getItemFlowable(@Path("id") final long id);
 
 }
