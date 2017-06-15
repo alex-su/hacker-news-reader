@@ -36,13 +36,13 @@ public class MainActivity extends LifecycleActivity {
         mBinding.recyclerView.setAdapter(mStoriesAdapter);
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recyclerView.setHasFixedSize(true);
-        mBinding.recyclerView.setItemAnimator(null);
 
         // Observe changes of the list of stories
         mViewModel.getStories().observe(this, stories -> {
             // Update UI
             if (stories != null) {
                 mStoriesAdapter.setData(stories);
+                mViewModel.isLoading.set(stories.isEmpty());
             }
         });
     }

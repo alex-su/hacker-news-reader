@@ -27,29 +27,13 @@ public class ItemsRepository {
         mApi = api;
     }
 
-    public LiveData<List<Item>> getStories(final boolean refreshFromNetwork) {
-        if (refreshFromNetwork) {
-            // Get IDs of top stories from network.
-            mApi.getTopStories()
-                    // Retry up to 3 times if the call fails
-                    .retry(3)
-                    // Convert to a list of ordered items
-                    .map(this::getItemListOrdered)
-                    // Insert items to DB
-                    .doOnNext(items -> {
-                        mDatabase.itemDao().deleteAll();
-                        mDatabase.itemDao().insertItems(items);
-                    })
-                    // Pick items for the first page
-                    .flatMapIterable(items -> items)
-                    .take(PAGE_SIZE)
-                    .toList()
-                    // Fetch details of each item from network
-                    .flatMap(this::fetchItemListDetails)
-                    // Insert the list of items to the database
-                    .subscribe(items -> mDatabase.itemDao().updateItems(items));
-        }
+    public LiveData<List<Item>> getStories() {
+        fetchTopStoriesFromNetwork();
         return mDatabase.itemDao().getStoriesLiveData();
+    }
+
+    public void refreshStories() {
+        fetchTopStoriesFromNetwork();
     }
 
     public void loadMoreStories(final int lastSortOrder) {
@@ -81,6 +65,35 @@ public class ItemsRepository {
             fetchItemDetails(id).subscribe(item -> mDatabase.itemDao().updateItem(item));
         }
         return mDatabase.itemDao().getItemLiveData(id);
+    }
+
+    /*
+     * ------------------- Private methods ---------------------
+     */
+
+    private void fetchTopStoriesFromNetwork() {
+        fetchTopStories()
+                // Insert the list of items to the database
+                .subscribe(items -> mDatabase.itemDao().updateItems(items));
+    }
+
+    private Single<List<Item>> fetchTopStories() {
+        return mApi.getTopStories()
+                // Retry up to 3 times if the call fails
+                .retry(3)
+                // Convert to a list of ordered items
+                .map(this::getItemListOrdered)
+                // Insert items to DB
+                .doOnNext(items -> {
+                    mDatabase.itemDao().deleteAll();
+                    mDatabase.itemDao().insertItems(items);
+                })
+                // Pick items for the first page
+                .flatMapIterable(items -> items)
+                .take(PAGE_SIZE)
+                .toList()
+                // Fetch details of each item from network
+                .flatMap(this::fetchItemListDetails);
     }
 
     private Flowable<Item> fetchItemDetails(final long id) {
