@@ -53,4 +53,8 @@ public class MainViewModel extends ViewModel {
         mItemsRepository.refreshStories();
     }
 
+    public void loadMore(final int lastSortOrder) {
+        mItemsRepository.loadMoreStories(lastSortOrder);
+    }
+
 }

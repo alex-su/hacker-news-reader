@@ -54,4 +54,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoryViewHolder> {
         mStories.addAll(storyList);
         notifyDataSetChanged();
     }
+
+    public int getLastSortOrder() {
+        return mStories.size() > 0 ? mStories.get(mStories.size() -1).getSortOrder() : 0;
+    }
 }
