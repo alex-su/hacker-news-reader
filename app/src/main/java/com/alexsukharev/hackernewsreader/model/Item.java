@@ -31,7 +31,7 @@ public class Item {
 
     private long parent;
 
-    private List<Long> children;
+    private List<Long> kids;
 
     @ColumnInfo(name = "sort_order")
     private int sortOrder;
@@ -111,12 +111,12 @@ public class Item {
         this.parent = parent;
     }
 
-    public List<Long> getChildren() {
-        return children;
+    public List<Long> getKids() {
+        return kids;
     }
 
-    public void setChildren(final List<Long> children) {
-        this.children = children;
+    public void setKids(final List<Long> kids) {
+        this.kids = kids;
     }
 
     public int getSortOrder() {

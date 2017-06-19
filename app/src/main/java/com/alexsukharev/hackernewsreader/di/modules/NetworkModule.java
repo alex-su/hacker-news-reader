@@ -2,9 +2,7 @@ package com.alexsukharev.hackernewsreader.di.modules;
 
 import com.alexsukharev.hackernewsreader.BuildConfig;
 import com.alexsukharev.hackernewsreader.di.scopes.AppScope;
-import com.alexsukharev.hackernewsreader.model.Item;
 import com.alexsukharev.hackernewsreader.network.HackerNewsApi;
-import com.alexsukharev.hackernewsreader.util.ItemDeserializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -49,7 +47,7 @@ public class NetworkModule {
     @Provides
     @AppScope
     Gson getGson() {
-        return new GsonBuilder().registerTypeAdapter(Item.class, new ItemDeserializer()).create();
+        return new GsonBuilder().create();
     }
 
 }

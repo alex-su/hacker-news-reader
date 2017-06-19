@@ -25,4 +25,9 @@
         <item name="android:textSize">@dimen/text_size_normal</item>
     </style>
 
+    <style name="TextAppearance.Small">
+        <item name="android:textColor">@color/medium_grey</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
 </resources>

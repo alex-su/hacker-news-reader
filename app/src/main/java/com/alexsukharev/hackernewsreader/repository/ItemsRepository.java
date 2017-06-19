@@ -48,8 +48,8 @@ public class ItemsRepository {
         if (refreshFromNetwork) {
             mDatabase.itemDao().getItemFlowable(storyId)
                     // Get IDs of this story's comments
-                    .filter(item -> item != null && item.getChildren() != null && !item.getChildren().isEmpty())
-                    .flatMapIterable(Item::getChildren)
+                    .filter(item -> item != null && item.getKids() != null && !item.getKids().isEmpty())
+                    .flatMapIterable(Item::getKids)
                     // Fetch comment details from network
                     // Retry if the call fails
                     .flatMap(this::fetchItemDetails)
