@@ -5,6 +5,9 @@ import com.alexsukharev.hackernewsreader.di.scopes.AppScope;
 import com.alexsukharev.hackernewsreader.network.HackerNewsApi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
+
+import java.util.Date;
 
 import dagger.Module;
 import dagger.Provides;
@@ -47,7 +50,9 @@ public class NetworkModule {
     @Provides
     @AppScope
     Gson getGson() {
-        return new GsonBuilder().create();
+        return new GsonBuilder()
+                .registerTypeAdapter(Date.class, (JsonDeserializer<Date>) (json, typeOfT, context) -> new Date(json.getAsJsonPrimitive().getAsLong()))
+                .create();
     }
 
 }

@@ -6,6 +6,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -30,6 +31,8 @@ public class Item {
     private int score;
 
     private long parent;
+
+    private Date time;
 
     private List<Long> kids;
 
@@ -109,6 +112,14 @@ public class Item {
 
     public void setParent(final long parent) {
         this.parent = parent;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(final Date time) {
+        this.time = time;
     }
 
     public List<Long> getKids() {

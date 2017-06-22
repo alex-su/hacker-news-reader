@@ -2,20 +2,35 @@ package com.alexsukharev.hackernewsreader.util;
 
 import android.arch.persistence.room.TypeConverter;
 
-import com.google.gson.Gson;
+import com.alexsukharev.hackernewsreader.di.Components;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ItemTypeConverters {
 
     @TypeConverter
     public static List<Long> listFromString(String value) {
-        return value == null ? null : new Gson().fromJson(value, List.class);
+        return value == null ? null : Components.getNetworkComponent().getGson().fromJson(value, ListOfLong.class);
     }
 
     @TypeConverter
-    public static String stringToList(List<Long> list) {
-        return list == null ? null : new Gson().toJson(list);
+    public static String listToString(List<Long> list) {
+        return list == null ? null : Components.getNetworkComponent().getGson().toJson(list);
+    }
+
+    @TypeConverter
+    public static Date dateFromTimestamp(Long value) {
+        return value == null ? null : new Date(value);
+    }
+
+    @TypeConverter
+    public static Long dateToTimestamp(Date date) {
+        return date == null ? null : date.getTime();
+    }
+
+    private static class ListOfLong extends ArrayList<Long> {
     }
 
 }

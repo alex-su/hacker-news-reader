@@ -6,8 +6,10 @@ import android.support.annotation.NonNull;
 import com.alexsukharev.hackernewsreader.di.components.ApplicationComponent;
 import com.alexsukharev.hackernewsreader.di.components.DaggerApplicationComponent;
 import com.alexsukharev.hackernewsreader.di.components.DaggerDatabaseComponent;
+import com.alexsukharev.hackernewsreader.di.components.DaggerNetworkComponent;
 import com.alexsukharev.hackernewsreader.di.components.DaggerRepositoryComponent;
 import com.alexsukharev.hackernewsreader.di.components.DatabaseComponent;
+import com.alexsukharev.hackernewsreader.di.components.NetworkComponent;
 import com.alexsukharev.hackernewsreader.di.components.RepositoryComponent;
 import com.alexsukharev.hackernewsreader.di.modules.ApplicationModule;
 
@@ -18,6 +20,8 @@ public class Components {
     private static ApplicationComponent mApplicationComponent;
 
     private static DatabaseComponent mDatabaseComponent;
+
+    private static NetworkComponent mNetworkComponent;
 
     private static RepositoryComponent mRepositoryComponent;
 
@@ -41,6 +45,13 @@ public class Components {
                     .build();
         }
         return mDatabaseComponent;
+    }
+
+    public static NetworkComponent getNetworkComponent() {
+        if (mNetworkComponent == null) {
+            mNetworkComponent = DaggerNetworkComponent.builder().build();
+        }
+        return mNetworkComponent;
     }
 
     public static RepositoryComponent getRepositoryComponent() {

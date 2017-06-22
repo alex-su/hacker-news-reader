@@ -6,4 +6,6 @@
 
     <color name="dark_grey">#212121</color>
     <color name="medium_grey">#616161</color>
+    <color name="light_grey">#bdbdbd</color>
+    <color name="light_grey_bg">#eeeeee</color>
 </resources>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.alexsukharev.hackernewsreader.viewmodel.StoryCommentsViewModel"/>
+
+        <variable
+            name="comment"
+            type="com.alexsukharev.hackernewsreader.model.Item"/>
+
+        <import type="android.text.Html"/>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingEnd="@dimen/padding_main"
+        android:paddingStart="@dimen/padding_main"
+        android:paddingTop="@dimen/padding_half">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/username_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{comment.by}"
+                android:textAppearance="@style/TextAppearance.Small"
+                tools:text="username"/>
+
+            <TextView
+                android:id="@+id/time_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="0dp"
+                android:layout_marginLeft="@dimen/padding_main"
+                android:layout_marginRight="0dp"
+                android:layout_marginStart="@dimen/padding_main"
+                android:textAppearance="@style/TextAppearance.Small"
+                app:time="@{comment.time}"
+                tools:text="4 hours"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/comment_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_half"
+            android:text='@{comment.text == null ? "" : Html.fromHtml(comment.text.trim())}'
+            android:textAppearance="@style/TextAppearance.Comment"
+            tools:text="5/5 would click again"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/padding_half"
+            android:background="@color/light_grey"/>
+
+    </LinearLayout>
+
+</layout>

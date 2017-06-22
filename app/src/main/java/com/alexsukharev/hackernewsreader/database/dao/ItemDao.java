@@ -22,19 +22,19 @@ public interface ItemDao {
     @Query("SELECT * FROM item WHERE type = 'story' AND sort_order > :fromOrder COLLATE NOCASE ORDER BY sort_order LIMIT :limit")
     Flowable<List<Item>> getStoriesFlowable(final int fromOrder, final int limit);
 
-    @Query("SELECT * FROM item WHERE parent = :storyId")
+    @Query("SELECT * FROM item WHERE parent = :storyId AND text IS NOT NULL ORDER BY sort_order")
     LiveData<List<Item>> getCommentsLiveData(final long storyId);
 
-    @Query("SELECT * FROM item WHERE parent = :storyId")
-    Flowable<List<Item>> getCommentsFlowable(final long storyId);
+    @Query("SELECT * FROM item WHERE parent = :storyId AND sort_order > :fromOrder COLLATE NOCASE ORDER BY sort_order LIMIT :limit")
+    Flowable<List<Item>> getCommentsFlowable(final long storyId, final int fromOrder, final int limit);
 
-    @Query("SELECT * FROM item WHERE id = :id")
+    @Query("SELECT * FROM item WHERE id = :id LIMIT 1")
     LiveData<Item> getItemLiveData(long id);
 
-    @Query("SELECT * FROM item WHERE id = :id")
+    @Query("SELECT * FROM item WHERE id = :id LIMIT 1")
     Flowable<Item> getItemFlowable(long id);
 
-    @Query("SELECT * FROM item WHERE id = :id")
+    @Query("SELECT * FROM item WHERE id = :id LIMIT 1")
     Item getItem(long id);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

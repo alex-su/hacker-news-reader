@@ -44,26 +44,24 @@ public class ItemsRepository {
                 .subscribe(items -> mDatabase.itemDao().updateItems(items));
     }
 
-    public LiveData<List<Item>> getComments(final long storyId, final boolean refreshFromNetwork) {
-        if (refreshFromNetwork) {
-            mDatabase.itemDao().getItemFlowable(storyId)
-                    // Get IDs of this story's comments
-                    .filter(item -> item != null && item.getKids() != null && !item.getKids().isEmpty())
-                    .flatMapIterable(Item::getKids)
-                    // Fetch comment details from network
-                    // Retry if the call fails
-                    .flatMap(this::fetchItemDetails)
-                    .toList()
-                    // Update comment in the database
-                    .subscribe(items -> mDatabase.itemDao().updateItems(items));
-        }
+    public LiveData<List<Item>> getComments(final long storyId) {
+        fetchCommentsFromNetwork(storyId);
         return mDatabase.itemDao().getCommentsLiveData(storyId);
     }
 
-    public LiveData<Item> getItemDetails(final long id, final boolean refreshFromNetwork) {
-        if (refreshFromNetwork) {
-            fetchItemDetails(id).subscribe(item -> mDatabase.itemDao().updateItem(item));
-        }
+    public void refreshComments(final long storyId) {
+        fetchCommentsFromNetwork(storyId);
+    }
+
+    public void loadMoreComments(final long storyId, final int lastSortOrder) {
+        mDatabase.itemDao().getCommentsFlowable(storyId, lastSortOrder, PAGE_SIZE)
+                .first(new ArrayList<>())
+                .flatMap(this::fetchItemListDetails)
+                // Insert the list of items to the database
+                .subscribe(items -> mDatabase.itemDao().updateItems(items));
+    }
+
+    public LiveData<Item> getItemDetails(final long id) {
         return mDatabase.itemDao().getItemLiveData(id);
     }
 
@@ -72,17 +70,11 @@ public class ItemsRepository {
      */
 
     private void fetchTopStoriesFromNetwork() {
-        fetchTopStories()
-                // Insert the list of items to the database
-                .subscribe(items -> mDatabase.itemDao().updateItems(items));
-    }
-
-    private Single<List<Item>> fetchTopStories() {
-        return mApi.getTopStories()
+        mApi.getTopStories()
                 // Retry up to 3 times if the call fails
                 .retry(3)
                 // Convert to a list of ordered items
-                .map(this::getItemListOrdered)
+                .map(items -> getItemListOrdered(items, Item.TYPE_STORY, 0))
                 // Insert items to DB
                 .doOnNext(items -> {
                     mDatabase.itemDao().deleteAll();
@@ -93,7 +85,26 @@ public class ItemsRepository {
                 .take(PAGE_SIZE)
                 .toList()
                 // Fetch details of each item from network
-                .flatMap(this::fetchItemListDetails);
+                .flatMap(this::fetchItemListDetails)
+                // Insert the list of items to the database
+                .subscribe(items -> mDatabase.itemDao().updateItems(items));
+    }
+
+    private void fetchCommentsFromNetwork(final long storyId) {
+        mDatabase.itemDao().getItemFlowable(storyId)
+                .first(new Item(0))
+                // Get IDs of this story's comments
+                .filter(item -> item != null && item.getKids() != null && !item.getKids().isEmpty())
+                .map(item -> getItemListOrdered(item.getKids(), Item.TYPE_COMMENT, storyId))
+                .doOnSuccess(items -> mDatabase.itemDao().insertItems(items))
+                // Pick items for the first page
+                .flattenAsFlowable(items -> items)
+                .take(PAGE_SIZE)
+                .toList()
+                // Fetch comment details from network
+                .flatMap(this::fetchItemListDetails)
+                // Update comments in the database
+                .subscribe(items -> mDatabase.itemDao().updateItems(items));
     }
 
     private Flowable<Item> fetchItemDetails(final long id) {
@@ -112,11 +123,12 @@ public class ItemsRepository {
                 .toList();
     }
 
-    private List<Item> getItemListOrdered(@NonNull final List<Long> idList) {
+    private List<Item> getItemListOrdered(@NonNull final List<Long> idList, @NonNull final String itemType, final long parentId) {
         int sortOrder = 0;
         final List<Item> itemList = new ArrayList<>();
         for (final long id : idList) {
-            final Item item = new Item(id, Item.TYPE_STORY, sortOrder++);
+            final Item item = new Item(id, itemType, sortOrder++);
+            item.setParent(parentId);
             itemList.add(item);
         }
         return itemList;

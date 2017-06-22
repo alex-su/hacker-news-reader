@@ -6,6 +6,7 @@ import com.alexsukharev.hackernewsreader.di.modules.RepositoryModule;
 import com.alexsukharev.hackernewsreader.di.scopes.AppScope;
 import com.alexsukharev.hackernewsreader.repository.ItemsRepository;
 import com.alexsukharev.hackernewsreader.viewmodel.MainViewModel;
+import com.alexsukharev.hackernewsreader.viewmodel.StoryCommentsViewModel;
 
 import dagger.Component;
 
@@ -14,6 +15,8 @@ import dagger.Component;
 public interface RepositoryComponent {
 
     void inject(MainViewModel viewModel);
+
+    void inject(StoryCommentsViewModel viewModel);
 
     ItemsRepository getItemsRepository();
 

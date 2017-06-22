@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.alexsukharev.hackernewsreader.viewmodel.MainViewModel"/>
+            type="com.alexsukharev.hackernewsreader.viewmodel.StoryCommentsViewModel"/>
 
         <variable
             name="story"
@@ -16,26 +16,31 @@
 
     </data>
 
-    <android.support.v7.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/padding_half"
-        android:layout_marginEnd="@dimen/padding_main"
-        android:layout_marginStart="@dimen/padding_main"
-        android:layout_marginTop="@dimen/padding_half"
-        android:onClick="@{(view) -> viewModel.onStoryClicked(view, story)}"
-        app:cardCornerRadius="@dimen/card_corner_radius"
-        app:contentPadding="@dimen/padding_main">
+        android:layout_height="match_parent"
+        tools:context="com.alexsukharev.hackernewsreader.ui.activities.MainActivity">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <LinearLayout
+            android:id="@+id/story_title_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:layout_marginTop="@dimen/padding_main"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/padding_main"
+                android:layout_marginStart="@dimen/padding_main"
                 android:text="@{story.title}"
                 android:textAppearance="@style/TextAppearance.Title"
                 tools:text="Title"/>
@@ -43,6 +48,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/padding_main"
+                android:layout_marginStart="@dimen/padding_main"
                 android:layout_marginTop="@dimen/padding_half"
                 android:orientation="horizontal">
 
@@ -68,8 +75,31 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/padding_main"
+                android:background="@color/light_grey"/>
+
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+        <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/story_title_bar"
+            android:background="@color/light_grey_bg"
+            app:onRefreshListener="@{() -> viewModel.onRefreshComments()}"
+            app:refreshing="@{viewModel.isLoadingComments}">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
 
 </layout>

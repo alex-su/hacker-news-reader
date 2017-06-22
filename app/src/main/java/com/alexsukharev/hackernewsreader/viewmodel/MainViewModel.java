@@ -3,10 +3,13 @@ package com.alexsukharev.hackernewsreader.viewmodel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableBoolean;
+import android.support.annotation.NonNull;
+import android.view.View;
 
 import com.alexsukharev.hackernewsreader.di.Components;
 import com.alexsukharev.hackernewsreader.model.Item;
 import com.alexsukharev.hackernewsreader.repository.ItemsRepository;
+import com.alexsukharev.hackernewsreader.ui.activities.StoryCommentsActivity;
 
 import java.util.List;
 
@@ -55,6 +58,10 @@ public class MainViewModel extends ViewModel {
 
     public void loadMore(final int lastSortOrder) {
         mItemsRepository.loadMoreStories(lastSortOrder);
+    }
+
+    public void onStoryClicked(@NonNull final View view, @NonNull final Item story) {
+        StoryCommentsActivity.start(view.getContext(), story.getId());
     }
 
 }

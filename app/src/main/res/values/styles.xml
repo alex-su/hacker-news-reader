@@ -22,6 +22,11 @@
 
     <style name="TextAppearance.Title">
         <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="TextAppearance.Comment">
+        <item name="android:textColor">@color/dark_grey</item>
         <item name="android:textSize">@dimen/text_size_normal</item>
     </style>
 

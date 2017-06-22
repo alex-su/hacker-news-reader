@@ -3,4 +3,9 @@
 
     <string name="points">%d points</string>
     <string name="comments">%d comments</string>
+
+    <string name="format_days">%d days</string>
+    <string name="format_hours">%d hours</string>
+    <string name="format_minutes">%d minutes</string>
+    <string name="format_seconds">%d seconds</string>
 </resources>
