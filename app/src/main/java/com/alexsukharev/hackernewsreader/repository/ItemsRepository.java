@@ -27,15 +27,26 @@ public class ItemsRepository {
         mApi = api;
     }
 
+    /**
+     * Loads a list of top stories refreshed from the network
+     * @return Stories LiveData to observe
+     */
     public LiveData<List<Item>> getStories() {
         fetchTopStoriesFromNetwork();
         return mDatabase.itemDao().getStoriesLiveData();
     }
 
+    /**
+     * Refreshes the list of top stories from the network
+     */
     public void refreshStories() {
         fetchTopStoriesFromNetwork();
     }
 
+    /**
+     * Loads the next page of stories
+     * @param lastSortOrder The sorting order of the last displayed item
+     */
     public void loadMoreStories(final int lastSortOrder) {
         mDatabase.itemDao().getStoriesFlowable(lastSortOrder, PAGE_SIZE)
                 .first(new ArrayList<>())
@@ -44,15 +55,26 @@ public class ItemsRepository {
                 .subscribe(items -> mDatabase.itemDao().updateItems(items));
     }
 
+    /**
+     * Loads a list of 20 first comments of the story refreshed from network
+     * @return Comments LiveData to observe
+     */
     public LiveData<List<Item>> getComments(final long storyId) {
         fetchCommentsFromNetwork(storyId);
         return mDatabase.itemDao().getCommentsLiveData(storyId);
     }
 
+    /**
+     * Refreshes the list of comments related to the story from the network
+     */
     public void refreshComments(final long storyId) {
         fetchCommentsFromNetwork(storyId);
     }
 
+    /**
+     * Loads the next page of comments
+     * @param lastSortOrder The sorting order of the last displayed item
+     */
     public void loadMoreComments(final long storyId, final int lastSortOrder) {
         mDatabase.itemDao().getCommentsFlowable(storyId, lastSortOrder, PAGE_SIZE)
                 .first(new ArrayList<>())
@@ -61,6 +83,11 @@ public class ItemsRepository {
                 .subscribe(items -> mDatabase.itemDao().updateItems(items));
     }
 
+    /**
+     * Loads item details from the database
+     * @param id Item id
+     * @return Item LiveData to observe
+     */
     public LiveData<Item> getItemDetails(final long id) {
         return mDatabase.itemDao().getItemLiveData(id);
     }
