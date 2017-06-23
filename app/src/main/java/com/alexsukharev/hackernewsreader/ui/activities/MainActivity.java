@@ -46,7 +46,6 @@ public class MainActivity extends LifecycleActivity {
             // Update UI
             if (stories != null) {
                 mStoriesAdapter.setData(stories);
-                mViewModel.isLoading.set(stories.isEmpty());
             }
         });
     }

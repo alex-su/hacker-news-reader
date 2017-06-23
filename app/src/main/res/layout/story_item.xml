@@ -23,6 +23,8 @@
         android:layout_marginEnd="@dimen/padding_main"
         android:layout_marginStart="@dimen/padding_main"
         android:layout_marginTop="@dimen/padding_half"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:onClick="@{(view) -> viewModel.onStoryClicked(view, story)}"
         app:cardCornerRadius="@dimen/card_corner_radius"
         app:contentPadding="@dimen/padding_main">

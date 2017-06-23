@@ -5,7 +5,6 @@ import com.alexsukharev.hackernewsreader.model.Item;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
@@ -14,10 +13,15 @@ public interface HackerNewsApi {
     @GET("topstories.json")
     Flowable<List<Long>> getTopStories();
 
-    @GET("item/{id}.json")
-    Observable<Item> getItemObservable(@Path("id") final long id);
+    /*
+     getStory() and getComment() use the same API endpoint, but return slightly different results for stories and comments.
+     It makes sense to separate them for testing purposes.
+      */
 
     @GET("item/{id}.json")
-    Flowable<Item> getItemFlowable(@Path("id") final long id);
+    Flowable<Item> getStory(@Path("id") final long id);
+
+    @GET("item/{id}.json")
+    Flowable<Item> getComment(@Path("id") final long id);
 
 }

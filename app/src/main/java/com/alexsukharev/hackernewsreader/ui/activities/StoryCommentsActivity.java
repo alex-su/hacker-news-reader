@@ -46,12 +46,7 @@ public class StoryCommentsActivity extends LifecycleActivity {
     }
 
     private void initStoryDetails() {
-        mViewModel.getStory().observe(this, story -> {
-            mBinding.setStory(story);
-            if (story != null && story.getKids() != null && !story.getKids().isEmpty()) {
-                mViewModel.isLoadingComments.set(true);
-            }
-        });
+        mViewModel.getStory().observe(this, story -> mBinding.setStory(story));
     }
 
     private void initCommentList() {
@@ -68,9 +63,6 @@ public class StoryCommentsActivity extends LifecycleActivity {
             // Update UI
             if (comments != null) {
                 mCommentsAdapter.setData(comments);
-                if (!comments.isEmpty()) {
-                    mViewModel.isLoadingComments.set(false);
-                }
             }
         });
     }

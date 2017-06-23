@@ -4,7 +4,6 @@ import android.arch.persistence.room.TypeConverter;
 
 import com.alexsukharev.hackernewsreader.di.Components;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,9 +27,6 @@ public class ItemTypeConverters {
     @TypeConverter
     public static Long dateToTimestamp(Date date) {
         return date == null ? null : date.getTime();
-    }
-
-    private static class ListOfLong extends ArrayList<Long> {
     }
 
 }
