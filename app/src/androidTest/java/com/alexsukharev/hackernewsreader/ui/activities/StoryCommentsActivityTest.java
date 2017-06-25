@@ -5,6 +5,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.v7.widget.RecyclerView;
 
 import com.alexsukharev.hackernewsreader.R;
+import com.alexsukharev.hackernewsreader.repository.CommentsRepository;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +28,7 @@ public class StoryCommentsActivityTest extends BaseActivityTest<StoryCommentsAct
     @Test
     public void testCommentsList() {
         // Check that 11 items are displayed on the screen
-        onView(withId(R.id.recycler_view)).check((view, noViewFoundException) -> assertThat(((RecyclerView) view).getAdapter().getItemCount(), is(11)));
+        onView(withId(R.id.recycler_view)).check((view, noViewFoundException) -> assertThat(((RecyclerView) view).getAdapter().getItemCount(), is(CommentsRepository.PAGE_SIZE)));
 
         // Check if the first item has the correct data
         onView(withRecyclerView(R.id.recycler_view).atPositionOnView(0, R.id.comment_text)).check(matches(withText(startsWith("Here is the snapshot from"))));
@@ -37,7 +38,7 @@ public class StoryCommentsActivityTest extends BaseActivityTest<StoryCommentsAct
     @Test
     public void testStoryDetails() {
         onView(withId(R.id.title)).check(matches(withText("Luna – Visual and textual functional programming language")));
-        onView(withId(R.id.comments)).check(matches(withText(getContext().getString(R.string.comments, 11))));
+        onView(withId(R.id.comments)).check(matches(withText(getContext().getString(R.string.comments, 37))));
         onView(withId(R.id.points)).check(matches(withText(getContext().getString(R.string.points, 85))));
     }
 

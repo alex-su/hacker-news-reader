@@ -21,7 +21,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.alexsukharev.hackernewsreader.util.RecyclerViewMatcher.withRecyclerView;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest extends BaseActivityTest<MainActivity> {
@@ -32,11 +32,11 @@ public class MainActivityTest extends BaseActivityTest<MainActivity> {
     @Test
     public void testStoryList() {
         // Check that PAGE_SIZE items are displayed on the screen
-        onView(withId(R.id.recycler_view)).check((view, noViewFoundException) -> assertThat(((RecyclerView) view).getAdapter().getItemCount(), is(StoriesRepository.PAGE_SIZE)));
+        onView(withId(R.id.recycler_view)).check((view, noViewFoundException) -> assertThat(((RecyclerView) view).getAdapter().getItemCount(), greaterThanOrEqualTo(StoriesRepository.PAGE_SIZE)));
 
         // Check if the first item has the correct title
         onView(withRecyclerView(R.id.recycler_view).atPositionOnView(0, R.id.title)).check(matches(withText("Luna – Visual and textual functional programming language")));
-        onView(withRecyclerView(R.id.recycler_view).atPositionOnView(0, R.id.comments)).check(matches(withText(getContext().getString(R.string.comments, 11))));
+        onView(withRecyclerView(R.id.recycler_view).atPositionOnView(0, R.id.comments)).check(matches(withText(getContext().getString(R.string.comments, 37))));
         onView(withRecyclerView(R.id.recycler_view).atPositionOnView(0, R.id.points)).check(matches(withText(getContext().getString(R.string.points, 85))));
     }
 

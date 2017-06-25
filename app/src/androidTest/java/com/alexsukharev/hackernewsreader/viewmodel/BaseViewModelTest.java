@@ -1,11 +1,9 @@
-package com.alexsukharev.hackernewsreader.ui.activities;
+package com.alexsukharev.hackernewsreader.viewmodel;
 
-import android.app.Activity;
 import android.app.Application;
+import android.arch.lifecycle.ViewModel;
 import android.content.Context;
-import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import com.alexsukharev.hackernewsreader.di.Components;
 import com.alexsukharev.hackernewsreader.di.components.DaggerNetworkComponent;
@@ -15,12 +13,10 @@ import com.alexsukharev.hackernewsreader.di.modules.InMemoryDatabaseModule;
 import com.alexsukharev.hackernewsreader.di.modules.NetworkModule;
 
 import org.junit.Before;
-import org.junit.Rule;
 
-abstract class BaseActivityTest<T extends Activity> {
+abstract class BaseViewModelTest<T extends ViewModel> {
 
-    @Rule
-    public final IntentsTestRule<T> mActivityTestRule = new IntentsTestRule<>(getActivityClass(), false, false);
+    T mViewModel;
 
     @Before
     public void setUp() {
@@ -39,16 +35,13 @@ abstract class BaseActivityTest<T extends Activity> {
                         .networkModule(fakeNetworkModule)
                         .databaseModule(new InMemoryDatabaseModule())
                         .build());
-        mActivityTestRule.launchActivity(getActivityStartIntent());
+        mViewModel = createViewModel();
     }
 
     Context getContext() {
         return InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 
-    Intent getActivityStartIntent() {
-        return new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), getActivityClass());
-    }
+    abstract T createViewModel();
 
-    abstract Class<T> getActivityClass();
 }
