@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CommentsRepository {
 
-    private static final int PAGE_SIZE = 20;
+    public static final int PAGE_SIZE = 20;
 
     private final HackerNewsApi mApi;
 

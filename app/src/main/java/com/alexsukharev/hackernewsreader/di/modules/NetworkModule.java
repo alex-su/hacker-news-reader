@@ -24,7 +24,7 @@ public class NetworkModule {
 
     @Provides
     @AppScope
-    HackerNewsApi getHackerNewsApi(final Retrofit retrofit) {
+    protected HackerNewsApi getHackerNewsApi(final Retrofit retrofit) {
         return retrofit.create(HackerNewsApi.class);
     }
 

@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class StoriesRepository {
 
-    private static final int PAGE_SIZE = 20;
+    public static final int PAGE_SIZE = 20;
 
     private final HackerNewsApi mApi;
 
@@ -78,6 +78,7 @@ public class StoriesRepository {
                 // Convert to a list of ordered items
                 .map(this::getItemListOrdered)
                 // Insert items to DB
+                .observeOn(Schedulers.io())
                 .doOnNext(items -> {
                     mDatabase.itemDao().deleteAll();
                     mDatabase.itemDao().insertItems(items);

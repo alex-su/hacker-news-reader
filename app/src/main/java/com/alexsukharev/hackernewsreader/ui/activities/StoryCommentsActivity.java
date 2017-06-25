@@ -17,7 +17,7 @@ import com.alexsukharev.hackernewsreader.viewmodel.StoryCommentsViewModel;
 
 public class StoryCommentsActivity extends LifecycleActivity {
 
-    private static final String EXTRA_STORY_ID = "story_id";
+    public static final String EXTRA_STORY_ID = "story_id";
 
     public static void start(@NonNull final Context context, final long storyId) {
         final Intent intent = new Intent(context, StoryCommentsActivity.class);

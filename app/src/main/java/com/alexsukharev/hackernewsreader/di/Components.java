@@ -5,10 +5,8 @@ import android.support.annotation.NonNull;
 
 import com.alexsukharev.hackernewsreader.di.components.ApplicationComponent;
 import com.alexsukharev.hackernewsreader.di.components.DaggerApplicationComponent;
-import com.alexsukharev.hackernewsreader.di.components.DaggerDatabaseComponent;
 import com.alexsukharev.hackernewsreader.di.components.DaggerNetworkComponent;
 import com.alexsukharev.hackernewsreader.di.components.DaggerRepositoryComponent;
-import com.alexsukharev.hackernewsreader.di.components.DatabaseComponent;
 import com.alexsukharev.hackernewsreader.di.components.NetworkComponent;
 import com.alexsukharev.hackernewsreader.di.components.RepositoryComponent;
 import com.alexsukharev.hackernewsreader.di.modules.ApplicationModule;
@@ -18,8 +16,6 @@ public class Components {
     private static Application sApplication;
 
     private static ApplicationComponent mApplicationComponent;
-
-    private static DatabaseComponent mDatabaseComponent;
 
     private static NetworkComponent mNetworkComponent;
 
@@ -38,15 +34,6 @@ public class Components {
         return mApplicationComponent;
     }
 
-    public static DatabaseComponent getDatabaseComponent() {
-        if (mDatabaseComponent == null) {
-            mDatabaseComponent = DaggerDatabaseComponent.builder()
-                    .applicationComponent(getApplicationComponent())
-                    .build();
-        }
-        return mDatabaseComponent;
-    }
-
     public static NetworkComponent getNetworkComponent() {
         if (mNetworkComponent == null) {
             mNetworkComponent = DaggerNetworkComponent.builder().build();
@@ -61,6 +48,14 @@ public class Components {
                     .build();
         }
         return mRepositoryComponent;
+    }
+
+    public static void setNetworkComponent(@NonNull final NetworkComponent networkComponent) {
+        mNetworkComponent = networkComponent;
+    }
+
+    public static void setRepositoryComponent(@NonNull final RepositoryComponent repositoryComponent) {
+        mRepositoryComponent = repositoryComponent;
     }
 
 }

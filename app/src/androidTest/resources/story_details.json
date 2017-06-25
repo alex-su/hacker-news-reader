@@ -1,0 +1,11 @@
+{
+  "by" : "interpol_p",
+  "descendants" : 23,
+  "id" : 14612680,
+  "kids" : [ 14613031, 14613178, 14613081, 14613013, 14612928, 14613182, 14613009, 14612998, 14613011, 14613097, 14613111 ],
+  "score" : 85,
+  "time" : 1498143635,
+  "title" : "Luna – Visual and textual functional programming language",
+  "type" : "story",
+  "url" : "http://www.luna-lang.org"
+}
